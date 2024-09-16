@@ -4,64 +4,66 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Nexus - Quantum Web Explorer</title>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@300;400;600&family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg-color: #030711;
-            --primary-color: #6d28d9;
-            --secondary-color: #22d3ee;
-            --text-color: #e2e8f0;
-            --accent-color: #f472b6;
+            --bg-color: #010409;
+            --primary-color: #58a6ff;
+            --secondary-color: #79c0ff;
+            --text-color: #c9d1d9;
+            --accent-color: #7ee787;
+            --error-color: #f85149;
         }
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
-            font-family: 'Inter', sans-serif;
-            background: linear-gradient(135deg, var(--bg-color), #0f172a);
+            font-family: 'Rajdhani', sans-serif;
+            background: var(--bg-color);
             color: var(--text-color);
             min-height: 100vh;
             display: flex;
+            flex-direction: column;
             align-items: center;
             justify-content: center;
+            overflow-x: hidden;
         }
         .container {
             width: 90%;
-            max-width: 600px;
+            max-width: 1200px;
             padding: 2rem;
-            background: rgba(255,255,255,0.03);
-            backdrop-filter: blur(20px);
-            border-radius: 16px;
-            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
-            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        header {
+            text-align: center;
+            margin-bottom: 3rem;
         }
         h1 {
             font-family: 'Orbitron', sans-serif;
-            font-size: 2.5rem;
-            text-align: center;
-            color: var(--accent-color);
+            font-size: 3.5rem;
+            color: var(--primary-color);
+            text-shadow: 0 0 10px var(--primary-color);
             margin-bottom: 0.5rem;
         }
         .subtitle {
-            text-align: center;
-            font-size: 1rem;
+            font-size: 1.2rem;
             color: var(--secondary-color);
-            margin-bottom: 2rem;
         }
         #nexusForm {
-            display: flex;
-            flex-direction: column;
-            gap: 1rem;
+            background: rgba(255,255,255,0.05);
+            border-radius: 15px;
+            padding: 2rem;
+            margin-bottom: 2rem;
         }
         .input-group {
             display: flex;
-            gap: 0.5rem;
+            gap: 1rem;
+            margin-bottom: 1rem;
         }
         #url {
             flex-grow: 1;
-            padding: 0.75rem;
+            padding: 0.75rem 1rem;
             font-size: 1rem;
             background: rgba(255,255,255,0.1);
             border: 1px solid var(--secondary-color);
-            border-radius: 8px;
+            border-radius: 5px;
             color: var(--text-color);
         }
         #submit {
@@ -69,31 +71,33 @@
             font-size: 1rem;
             font-weight: 600;
             background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
-            color: white;
+            color: var(--bg-color);
             border: none;
-            border-radius: 8px;
+            border-radius: 5px;
             cursor: pointer;
             transition: all 0.3s ease;
         }
         #submit:hover {
             transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            box-shadow: 0 5px 15px rgba(88, 166, 255, 0.4);
         }
         .options {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-            gap: 1rem;
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
         }
         .option {
             display: flex;
             align-items: center;
-            gap: 0.5rem;
+            margin-right: 1rem;
+            margin-bottom: 0.5rem;
         }
         .switch {
             position: relative;
             display: inline-block;
             width: 50px;
             height: 24px;
+            margin-right: 0.5rem;
         }
         .switch input { opacity: 0; width: 0; height: 0; }
         .slider {
@@ -113,26 +117,44 @@
             transition: .4s;
             border-radius: 50%;
         }
-        input:checked + .slider { background-color: var(--secondary-color); }
+        input:checked + .slider { background-color: var(--accent-color); }
         input:checked + .slider:before { transform: translateX(26px); }
-        #result, #stats {
-            margin-top: 2rem;
-            padding: 1rem;
+        #result {
             background: rgba(255,255,255,0.05);
-            border-radius: 8px;
+            border-radius: 15px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            min-height: 400px;
+        }
+        #stats {
+            background: rgba(255,255,255,0.05);
+            border-radius: 15px;
+            padding: 1rem;
         }
         .loading { color: var(--secondary-color); }
-        .error { color: #ef4444; }
+        .error { color: var(--error-color); }
+        #console {
+            font-family: 'Courier New', monospace;
+            background: rgba(0,0,0,0.3);
+            color: var(--accent-color);
+            padding: 1rem;
+            border-radius: 5px;
+            margin-top: 1rem;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>Nexus</h1>
-        <p class="subtitle">Quantum Web Explorer</p>
+        <header>
+            <h1>Nexus</h1>
+            <p class="subtitle">Quantum Web Explorer</p>
+        </header>
         <form id="nexusForm">
             <div class="input-group">
                 <input type="text" id="url" placeholder="Enter URL to explore" required>
-                <button type="submit" id="submit">Launch</button>
+                <button type="submit" id="submit">Initiate</button>
             </div>
             <div class="options">
                 <div class="option">
@@ -160,23 +182,33 @@
         </form>
         <div id="result"></div>
         <div id="stats"></div>
+        <div id="console"></div>
     </div>
     <script>
+        const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
+
         const quantumEncrypt = async (data) => {
-            const encoder = new TextEncoder();
-            const encoded = encoder.encode(data);
-            const buffer = await crypto.subtle.digest('SHA-256', encoded);
-            return Array.from(new Uint8Array(buffer)).map(b => b.toString(16).padStart(2, '0')).join('');
+            await sleep(100);
+            return btoa(data);
         };
 
         const aiContentFilter = async (content) => {
+            await sleep(150);
             const sensitiveWords = ['offensive', 'inappropriate', 'explicit'];
             return content.replace(new RegExp(sensitiveWords.join('|'), 'gi'), match => '*'.repeat(match.length));
         };
 
         const optimizeRoute = async (url) => {
-            const hash = await quantumEncrypt(url);
-            return `https://quantum-optimized-${hash.substr(0, 8)}.nexus/${url}`;
+            await sleep(200);
+            const chars = 'abcdefghijklmnopqrstuvwxyz0123456789';
+            const random = Array.from({length: 8}, () => chars[Math.floor(Math.random() * chars.length)]).join('');
+            return `https://quantum-optimized-${random}.nexus/${url}`;
+        };
+
+        const logToConsole = (message) => {
+            const consoleElement = document.getElementById('console');
+            consoleElement.textContent += message + '\n';
+            consoleElement.scrollTop = consoleElement.scrollHeight;
         };
 
         const quantumFetch = async (url, options) => {
@@ -187,28 +219,31 @@
                     url = 'https://' + url;
                 }
 
-                let optimizedUrl = options.wormholeRouting ? await optimizeRoute(url) : url;
-                let response = await fetch(optimizedUrl);
+                logToConsole(`Initiating quantum fetch for ${url}`);
+
+                if (options.wormholeRouting) {
+                    url = await optimizeRoute(url);
+                    logToConsole(`Optimized route: ${url}`);
+                }
+
+                const response = await fetch(url);
                 let content = await response.text();
+                logToConsole(`Content retrieved. Size: ${content.length} bytes`);
 
                 if (options.aiContentFilter) {
                     content = await aiContentFilter(content);
+                    logToConsole('AI content filter applied');
                 }
 
                 if (options.quantumEncryption) {
                     content = await quantumEncrypt(content);
+                    logToConsole('Quantum encryption completed');
                 }
 
                 const end = performance.now();
-                const originalSize = new Blob([content]).size;
+                const size = new Blob([content]).size;
 
-                return {
-                    content,
-                    stats: {
-                        time: end - start,
-                        size: originalSize
-                    }
-                };
+                return { content, stats: { time: end - start, size } };
             } catch (error) {
                 throw new Error(`Quantum anomaly detected: ${error.message}`);
             }
@@ -225,8 +260,10 @@
 
             const resultDiv = document.getElementById('result');
             const statsDiv = document.getElementById('stats');
+            const consoleDiv = document.getElementById('console');
             resultDiv.innerHTML = '<div class="loading">Initiating quantum data transfer...</div>';
             statsDiv.innerHTML = '';
+            consoleDiv.textContent = '';
 
             try {
                 const result = await quantumFetch(url, options);
