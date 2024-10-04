@@ -9,14 +9,15 @@
             margin: 0;
             padding: 0;
             font-family: 'Arial', sans-serif;
-            background-color: #333333; /* Charcoal Black */
+            background-color: #2e2e2e; /* Charcoal Black */
             color: #FFFFFF;
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: center;
-            height: 100vh;
+            justify-content: flex-start;
+            min-height: 100vh;
             text-align: center;
+            overflow-x: hidden;
         }
 
         header {
@@ -24,17 +25,19 @@
             width: 100%;
             padding: 20px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+            margin-bottom: 30px;
         }
 
         h1 {
-            font-size: 48px;
+            font-size: 2.5em;
             margin: 0;
             color: #FFFFFF;
+            letter-spacing: 2px;
         }
 
         h2 {
-            font-size: 32px;
-            margin: 20px 0;
+            font-size: 1.5em;
+            margin: 10px 0;
             color: #CCCCCC;
         }
 
@@ -44,14 +47,20 @@
         }
 
         .search-box {
-            width: 50%;
+            width: 80%;
+            max-width: 600px;
             padding: 15px;
-            font-size: 18px;
-            border-radius: 8px;
-            border: 2px solid #4B0082;
+            font-size: 1.1em;
+            border-radius: 12px;
+            border: none;
             outline: none;
             background-color: #222;
             color: #FFFFFF;
+            transition: box-shadow 0.3s ease;
+        }
+
+        .search-box:focus {
+            box-shadow: 0 0 10px #4B0082;
         }
 
         .games-grid {
@@ -61,27 +70,68 @@
             margin-top: 40px;
             width: 90%;
             max-width: 1200px;
+            justify-items: center;
         }
 
         .game-item {
+            position: relative;
             background-color: #444;
-            border-radius: 8px;
-            padding: 20px;
-            color: #FFF;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            transition: transform 0.3s ease;
+            border-radius: 10px;
+            overflow: hidden;
+            cursor: pointer;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            width: 100%;
+            max-width: 300px;
+        }
+
+        .game-item img {
+            width: 100%;
+            height: auto;
+            display: block;
+            border-radius: 10px;
         }
 
         .game-item:hover {
             transform: scale(1.05);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.5);
+        }
+
+        .game-item::after {
+            content: attr(data-title);
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            color: #fff;
+            text-align: center;
+            padding: 10px;
+            font-size: 1em;
+            font-weight: bold;
         }
 
         footer {
             margin-top: 50px;
             color: #777;
+        }
+
+        /* Mobile responsive adjustments */
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2em;
+            }
+
+            h2 {
+                font-size: 1.2em;
+            }
+
+            .search-box {
+                width: 90%;
+                font-size: 1em;
+            }
+
+            .game-item {
+                max-width: 100%;
+            }
         }
     </style>
 </head>
@@ -96,15 +146,27 @@
     </div>
 
     <div class="games-grid" id="gamesGrid">
-        <div class="game-item">Entertainment 1</div>
-        <div class="game-item">Entertainment 2</div>
-        <div class="game-item">Entertainment 3</div>
-        <div class="game-item">Entertainment 4</div>
-        <div class="game-item">Entertainment 5</div>
-        <div class="game-item">Entertainment 6</div>
-        <div class="game-item">Entertainment 7</div>
-        <div class="game-item"></div> <!-- Removed "Game 8" text -->
-        <div class="game-item">Game 9</div>
+        <div class="game-item" data-title="Entertainment 1">
+            <img src="https://via.placeholder.com/300x200.png?text=Entertainment+1" alt="Entertainment 1">
+        </div>
+        <div class="game-item" data-title="Entertainment 2">
+            <img src="https://via.placeholder.com/300x200.png?text=Entertainment+2" alt="Entertainment 2">
+        </div>
+        <div class="game-item" data-title="Entertainment 3">
+            <img src="https://via.placeholder.com/300x200.png?text=Entertainment+3" alt="Entertainment 3">
+        </div>
+        <div class="game-item" data-title="Entertainment 4">
+            <img src="https://via.placeholder.com/300x200.png?text=Entertainment+4" alt="Entertainment 4">
+        </div>
+        <div class="game-item" data-title="Entertainment 5">
+            <img src="https://via.placeholder.com/300x200.png?text=Entertainment+5" alt="Entertainment 5">
+        </div>
+        <div class="game-item" data-title="Entertainment 6">
+            <img src="https://via.placeholder.com/300x200.png?text=Entertainment+6" alt="Entertainment 6">
+        </div>
+        <div class="game-item" data-title="Entertainment 7">
+            <img src="https://via.placeholder.com/300x200.png?text=Entertainment+7" alt="Entertainment 7">
+        </div>
     </div>
 
     <footer>
@@ -118,7 +180,7 @@
 
             for (let i = 0; i < gameItems.length; i++) {
                 let game = gameItems[i];
-                if (game.innerText.toLowerCase().includes(searchInput)) {
+                if (game.getAttribute('data-title').toLowerCase().includes(searchInput)) {
                     game.style.display = '';
                 } else {
                     game.style.display = 'none';
