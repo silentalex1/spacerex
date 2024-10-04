@@ -1,1 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Space Rex - Entertainment</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Arial', sans-serif;
+            background-color: #333333; /* Charcoal Black */
+            color: #FFFFFF;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            text-align: center;
+        }
 
+        header {
+            background-color: #4B0082; /* Deep Purple */
+            width: 100%;
+            padding: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+        }
+
+        h1 {
+            font-size: 48px;
+            margin: 0;
+            color: #FFFFFF;
+        }
+
+        h2 {
+            font-size: 32px;
+            margin: 20px 0;
+            color: #CCCCCC;
+        }
+
+        .search-container {
+            margin-top: 20px;
+            width: 100%;
+        }
+
+        .search-box {
+            width: 50%;
+            padding: 15px;
+            font-size: 18px;
+            border-radius: 8px;
+            border: 2px solid #4B0082;
+            outline: none;
+            background-color: #222;
+            color: #FFFFFF;
+        }
+
+        .games-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 20px;
+            margin-top: 40px;
+            width: 90%;
+            max-width: 1200px;
+        }
+
+        .game-item {
+            background-color: #444;
+            border-radius: 8px;
+            padding: 20px;
+            color: #FFF;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            transition: transform 0.3s ease;
+        }
+
+        .game-item:hover {
+            transform: scale(1.05);
+        }
+
+        footer {
+            margin-top: 50px;
+            color: #777;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Space Rex</h1>
+        <h2>Entertainment</h2>
+    </header>
+
+    <div class="search-container">
+        <input class="search-box" type="text" id="searchBar" placeholder="Search for entertainment..." onkeyup="filterGames()">
+    </div>
+
+    <div class="games-grid" id="gamesGrid">
+        <div class="game-item">Entertainment 1</div>
+        <div class="game-item">Entertainment 2</div>
+        <div class="game-item">Entertainment 3</div>
+        <div class="game-item">Entertainment 4</div>
+        <div class="game-item">Entertainment 5</div>
+        <div class="game-item">Entertainment 6</div>
+        <div class="game-item">Entertainment 7</div>
+        <div class="game-item"></div> <!-- Removed "Game 8" text -->
+        <div class="game-item">Game 9</div>
+    </div>
+
+    <footer>
+        <p>© 2024 Space Rex - All Rights Reserved</p>
+    </footer>
+
+    <script>
+        function filterGames() {
+            const searchInput = document.getElementById('searchBar').value.toLowerCase();
+            const gameItems = document.getElementsByClassName('game-item');
+
+            for (let i = 0; i < gameItems.length; i++) {
+                let game = gameItems[i];
+                if (game.innerText.toLowerCase().includes(searchInput)) {
+                    game.style.display = '';
+                } else {
+                    game.style.display = 'none';
+                }
+            }
+        }
+    </script>
+</body>
+</html>
