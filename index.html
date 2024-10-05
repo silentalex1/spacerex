@@ -25,10 +25,13 @@
             flex-direction: column;
             min-height: 100vh;
             overflow-x: hidden;
+            background-image: url('https://cdn.pixabay.com/photo/2016/11/29/09/22/space-1867316_1280.jpg'); /* Add your starry background here */
+            background-size: cover;
+            background-attachment: fixed;
         }
 
         header {
-            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            background: linear-gradient(135deg, rgba(106, 13, 173, 0.8), rgba(155, 89, 182, 0.8));
             padding: 20px;
             text-align: center;
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
@@ -39,14 +42,13 @@
         header::before {
             content: '';
             position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: radial-gradient(circle, rgba(255,255,255,0.1) 10%, transparent 10.5%);
-            background-size: 20px 20px;
-            transform: rotate(30deg);
-            z-index: 1;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('https://cdn.pixabay.com/photo/2017/11/10/14/09/space-2920877_1280.jpg') repeat; /* Star background */
+            opacity: 0.5;
+            z-index: 0;
         }
 
         h1 {
@@ -115,33 +117,17 @@
         .game-item {
             background-color: var(--card-color);
             border-radius: 20px;
-            overflow: hidden;
+            padding: 20px;
             transition: all 0.3s ease;
             position: relative;
             box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
-        }
-
-        .game-item img {
-            width: 100%;
-            height: 200px;
-            object-fit: cover;
-            transition: transform 0.3s ease;
+            text-align: center;
+            text-decoration: none; /* Remove underline from links */
+            color: var(--text-color); /* Text color */
         }
 
         .game-item:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4);
-        }
-
-        .game-item:hover img {
-            transform: scale(1.1);
-        }
-
-        .game-info {
-            padding: 20px;
-            text-align: center;
-            position: relative;
-            z-index: 1;
+            background-color: var(--secondary-color); /* Change background on hover */
         }
 
         .game-title {
@@ -156,13 +142,8 @@
             margin-bottom: 15px;
         }
 
-        .game-rating {
-            color: var(--accent-color);
-            font-size: 1.1em;
-        }
-
         footer {
-            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            background: linear-gradient(135deg, rgba(106, 13, 173, 0.8), rgba(155, 89, 182, 0.8));
             color: var(--text-color);
             text-align: center;
             padding: 20px;
@@ -174,14 +155,13 @@
         footer::before {
             content: '';
             position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: radial-gradient(circle, rgba(255,255,255,0.1) 10%, transparent 10.5%);
-            background-size: 20px 20px;
-            transform: rotate(30deg);
-            z-index: 1;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('https://cdn.pixabay.com/photo/2017/11/10/14/09/space-2920877_1280.jpg') repeat; /* Star background */
+            opacity: 0.5;
+            z-index: 0;
         }
 
         footer p {
@@ -194,33 +174,9 @@
                 grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
             }
         }
-
-        .floating-stars {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: -1;
-        }
-
-        .star {
-            position: absolute;
-            background-color: #FFF;
-            border-radius: 50%;
-            animation: twinkle 5s infinite;
-        }
-
-        @keyframes twinkle {
-            0%, 100% { opacity: 0; }
-            50% { opacity: 1; }
-        }
     </style>
 </head>
 <body>
-    <div class="floating-stars" id="starField"></div>
-
     <header>
         <h1>Space Rex</h1>
         <h2>Galactic Entertainment Hub</h2>
@@ -243,69 +199,39 @@
 
     <script>
         const entertainmentItems = [
-            { title: "Cosmic Quest", image: "/api/placeholder/300/200?text=Cosmic+Quest", description: "Embark on an epic journey across the stars", rating: 4.8 },
-            { title: "Stellar Battles", image: "/api/placeholder/300/200?text=Stellar+Battles", description: "Command fleets in intense space warfare", rating: 4.7 },
-            { title: "Galactic Racer", image: "/api/placeholder/300/200?text=Galactic+Racer", description: "Speed through asteroid fields and nebulae", rating: 4.5 },
-            { title: "Nebula Explorers", image: "/api/placeholder/300/200?text=Nebula+Explorers", description: "Uncover the mysteries of distant nebulae", rating: 4.6 },
-            { title: "Asteroid Miner", image: "/api/placeholder/300/200?text=Asteroid+Miner", description: "Build your space mining empire", rating: 4.4 },
-            { title: "Space Station Sim", image: "/api/placeholder/300/200?text=Space+Station+Sim", description: "Manage and expand your own space station", rating: 4.9 },
-            { title: "Alien Zoo Keeper", image: "/api/placeholder/300/200?text=Alien+Zoo+Keeper", description: "Collect and care for exotic alien creatures", rating: 4.7 },
-            { title: "Quantum Leap", image: "/api/placeholder/300/200?text=Quantum+Leap", description: "Navigate through mind-bending quantum realms", rating: 4.8 },
+            { title: "1v1.lol", description: "A free, online, third-person shooter entertainment where players compete in a battle royale to be the last one standing.", url: "/1v1lol" },
+            { title: "rblx play.gg", description: "An online entertainment platform that allows users to play and create games, chat with others, and socialize in a virtual world.", url: "/playrblx.gg" },
+            { title: "paper mc", description: "A 3D sandbox entertainment where players can build, explore, and survive in a virtual world using blocks.", url: "/paperminecraft" },
+            { title: "Shell shockers", description: "A popular online browser-based FPS entertainment in which players battle against each other with cartoonish weapons in a variety of maps, with a twist — everyone plays as an egg.", url: "/shellshockers" },
         ];
 
         function createGameElement(game) {
             return `
-                <div class="game-item" data-title="${game.title.toLowerCase()}">
-                    <img src="${game.image}" alt="${game.title}">
+                <a class="game-item" href="${game.url}">
                     <div class="game-info">
                         <h3 class="game-title">${game.title}</h3>
                         <p class="game-description">${game.description}</p>
-                        <div class="game-rating">
-                            ${game.rating} <i class="fas fa-star"></i>
-                        </div>
                     </div>
-                </div>
+                </a>
             `;
         }
 
-        function renderGames(games) {
+        function displayGames(games) {
             const gamesGrid = document.getElementById('gamesGrid');
             gamesGrid.innerHTML = games.map(createGameElement).join('');
         }
 
-        function filterGames() {
-            const searchInput = document.getElementById('searchBar').value.toLowerCase();
-            const filteredGames = entertainmentItems.filter(game => 
-                game.title.toLowerCase().includes(searchInput) ||
-                game.description.toLowerCase().includes(searchInput)
-            );
-            renderGames(filteredGames);
+        function filterGames(query) {
+            const filteredGames = entertainmentItems.filter(game => game.title.toLowerCase().includes(query.toLowerCase()));
+            displayGames(filteredGames);
         }
 
-        document.getElementById('searchBar').addEventListener('input', filterGames);
+        document.getElementById('searchBar').addEventListener('input', (event) => {
+            filterGames(event.target.value);
+        });
 
-        // Initial render
-        renderGames(entertainmentItems);
-
-        // Create floating stars
-        function createStars() {
-            const starField = document.getElementById('starField');
-            const numberOfStars = 100;
-
-            for (let i = 0; i < numberOfStars; i++) {
-                const star = document.createElement('div');
-                star.className = 'star';
-                star.style.width = `${Math.random() * 3}px`;
-                star.style.height = star.style.width;
-                star.style.left = `${Math.random() * 100}%`;
-                star.style.top = `${Math.random() * 100}%`;
-                star.style.animationDuration = `${Math.random() * 3 + 2}s`;
-                star.style.animationDelay = `${Math.random() * 5}s`;
-                starField.appendChild(star);
-            }
-        }
-
-        createStars();
+        // Initial display
+        displayGames(entertainmentItems);
     </script>
 </body>
 </html>
