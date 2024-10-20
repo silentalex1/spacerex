@@ -1,1 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Linkvertise Bypasser</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            text-align: center;
+        }
+        input {
+            width: 300px;
+            padding: 10px;
+            margin-right: 10px;
+        }
+        button {
+            padding: 10px 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Linkvertise Bypasser</h1>
+    <input type="text" id="linkInput" placeholder="Paste your Linkvertise link here">
+    <button onclick="bypassLink()">Bypass Link</button>
+    <p id="result"></p>
 
+    <script>
+        async function bypassLink() {
+            const link = document.getElementById('linkInput').value;
+            const url = `https://spacerex.fun/bypass?url=${encodeURIComponent(link)}`;
+
+            try {
+                const response = await fetch(url);
+                const data = await response.json();
+                const finalLink = data.link; // Assuming the API returns the actual link in 'link'
+
+                if (finalLink) {
+                    document.getElementById('result').innerHTML = `<a href="${finalLink}" target="_blank">${finalLink}</a>`;
+                } else {
+                    document.getElementById('result').innerText = 'Link not found or could not be bypassed.';
+                }
+            } catch (error) {
+                document.getElementById('result').innerText = 'An error occurred: ' + error.message;
+            }
+        }
+    </script>
+</body>
+</html>
