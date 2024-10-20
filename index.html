@@ -7,44 +7,81 @@
     <style>
         body {
             font-family: Arial, sans-serif;
-            margin: 20px;
-            text-align: center;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
-        input {
+        h1 {
+            color: #333;
+        }
+        input[type="text"] {
             width: 300px;
             padding: 10px;
-            margin-right: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 4px;
         }
         button {
-            padding: 10px 20px;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            background-color: #28a745;
+            color: white;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #218838;
+        }
+        .output {
+            margin-top: 20px;
+            padding: 10px;
+            background-color: #fff;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            width: 300px;
+            word-wrap: break-word;
+        }
+        .error {
+            color: red;
         }
     </style>
 </head>
 <body>
+
     <h1>Linkvertise Bypasser</h1>
-    <input type="text" id="linkInput" placeholder="Paste your Linkvertise link here">
-    <button onclick="bypassLink()">Bypass Link</button>
-    <p id="result"></p>
+    <input type="text" id="link" placeholder="Paste your Linkvertise link here">
+    <button id="bypassBtn">Bypass Link</button>
+
+    <div class="output" id="result"></div>
 
     <script>
-        async function bypassLink() {
-            const link = document.getElementById('linkInput').value;
-            const url = `https://spacerex.fun/bypass?url=${encodeURIComponent(link)}`;
+        document.getElementById('bypassBtn').addEventListener('click', async function() {
+            const link = document.getElementById('link').value;
+            const resultDiv = document.getElementById('result');
+            resultDiv.innerHTML = ''; // Clear previous result
+
+            if (!link) {
+                resultDiv.innerHTML = '<div class="error">Please enter a Linkvertise link.</div>';
+                return;
+            }
 
             try {
-                const response = await fetch(url);
+                const response = await fetch(`https://api.bypass.vip/bypass?url=${encodeURIComponent(link)}`);
                 const data = await response.json();
-                const finalLink = data.link; // Assuming the API returns the actual link in 'link'
 
-                if (finalLink) {
-                    document.getElementById('result').innerHTML = `<a href="${finalLink}" target="_blank">${finalLink}</a>`;
+                if (data && data.link) {
+                    resultDiv.innerHTML = `Bypassed link: <a href="${data.link}" target="_blank">${data.link}</a>`;
                 } else {
-                    document.getElementById('result').innerText = 'Link not found or could not be bypassed.';
+                    throw new Error('Failed to retrieve the bypassed link.');
                 }
             } catch (error) {
-                document.getElementById('result').innerText = 'An error occurred: ' + error.message;
+                resultDiv.innerHTML = `<div class="error">An error occurred: ${error.message}</div>`;
             }
-        }
+        });
     </script>
+
 </body>
 </html>
