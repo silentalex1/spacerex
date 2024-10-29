@@ -88,5 +88,110 @@
         displayAnswers();
     </script>
 
+    <script type="module">
+        import SocketHandler from './network/socket.js';
+        import KeybindManager from './keybindManager.js';
+        import Hud from './hud/hud.js';
+
+        class Cheat extends EventTarget {
+            constructor() {
+                super();
+                this.socketHandler = new SocketHandler(this);
+                this.keybindManager = new KeybindManager();
+                this.hud = new Hud(this);
+                this.funcs = new Map();
+                this.scripts = [];
+                window.cheat = this;
+
+                this.socketHandler.addEventListener("socket", (e) => {
+                    this.log("Socket connected", e);
+                });
+
+                this.socketHandler.getSocket();
+                this.initializeScripts();
+                this.waitForLoad();
+            }
+
+            initializeScripts() {
+                this.fetchAnswers();
+            }
+
+            fetchAnswers() {
+                const questionElement = document.querySelector('.question'); // Adjust selector as needed
+                const question = questionElement ? questionElement.innerText : '';
+
+                if (question) {
+                    fetch(`https://api.gimkit.com/getAnswer?question=${encodeURIComponent(question)}`)
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data && data.answer) {
+                                this.submitAnswer(data.answer);
+                            }
+                        })
+                        .catch(error => {
+                            this.log("Error fetching answer:", error);
+                        });
+                }
+            }
+
+            submitAnswer(answer) {
+                const answerInput = document.querySelector('input[type="text"]'); // Adjust selector as needed
+                if (answerInput) {
+                    answerInput.value = answer;
+                    const submitButton = document.querySelector('button.submit'); // Adjust selector as needed
+                    if (submitButton) {
+                        submitButton.click();
+                    }
+                }
+            }
+
+            waitForLoad() {
+                const loadInterval = setInterval(() => {
+                    const loadedData = unsafeWindow?.stores?.loading;
+                    const isLoaded = loadedData?.percentageAssetsLoaded >= 100 
+                        && loadedData?.completedInitialLoad
+                        && loadedData?.loadedInitialDevices
+                        && loadedData?.loadedInitialTerrain;
+
+                    if (isLoaded) {
+                        clearInterval(loadInterval);
+                        this.log("Game Loaded");
+                        this.dispatchEvent(new CustomEvent("gameLoaded"));
+                    }
+                }, 1000 / 60);
+            }
+
+            antifreeze() {
+                const originalFreeze = Object.freeze;
+                Object.freeze = (obj) => {
+                    if (obj.constructor?.name === "WebSocket" || obj.name === "WebSocket") return obj;
+                    return originalFreeze(obj);
+                };
+
+                const originalSend = WebSocket.prototype.send;
+                Object.defineProperty(WebSocket.prototype, 'send', {
+                    configurable: false,
+                    enumerable: false,
+                    get: () => originalSend,
+                    set: (value) => {
+                        if (value !== originalSend) {
+                            console.warn("Attempted to modify WebSocket.prototype.send");
+                        }
+                    }
+                });
+            }
+
+            log(...args) {
+                console.log("[GC]", ...args);
+            }
+
+            getScript(name) {
+                return this.scripts.find(script => script.name === name) || null;
+            }
+        }
+
+        const cheat = new Cheat();
+    </script>
+
 </body>
 </html>
