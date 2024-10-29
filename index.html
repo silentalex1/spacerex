@@ -63,14 +63,6 @@
         input[type="text"]::placeholder {
             color: #aaa; /* Placeholder text color */
         }
-
-        /* Styles for the answers page */
-        .answers-container {
-            display: none; /* Hidden by default */
-            flex-direction: column;
-            align-items: center;
-            margin-top: 50px;
-        }
     </style>
 </head>
 <body>
@@ -84,53 +76,24 @@
         <input type="text" id="gimkitIdInput" placeholder="Enter Gimkit ID" />
     </div>
 
-    <div class="answers-container" id="answersContainer">
-        <h2>Gimkit Answers</h2>
-        <div id="answersContent"></div>
-    </div>
-
     <script>
         const inputField = document.getElementById('gimkitIdInput');
-        const answersContainer = document.getElementById('answersContainer');
-        const answersContent = document.getElementById('answersContent');
-
-        // Function to fetch Gimkit answers based on ID
-        const fetchGimkitAnswers = async (id) => {
-            try {
-                const response = await fetch(`https://www.gimkit.com/api/games/fetch/${id}`);
-                const data = await response.json();
-                return data.kit.questions.map(question => ({
-                    question: question.text,
-                    answer: question.answers[0].text // Assumes the first answer is correct
-                }));
-            } catch (error) {
-                console.error('Error fetching answers:', error);
-                return [];
-            }
-        };
 
         // Event listener for input field
-        inputField.addEventListener('keypress', async (event) => {
+        inputField.addEventListener('keypress', (event) => {
             if (event.key === 'Enter') {
-                const gimkitId = inputField.value;
+                const gimkitId = inputField.value.trim(); // Get the Gimkit ID
 
-                // Fade out the input box
-                inputField.style.opacity = 0;
+                if (gimkitId) {
+                    // Fade out the input box
+                    inputField.style.opacity = 0;
 
-                // Wait for the fade-out transition to finish
-                setTimeout(async () => {
-                    // Fetch answers
-                    const answers = await fetchGimkitAnswers(gimkitId);
-
-                    // Display answers
-                    answersContainer.style.display = 'flex';
-                    answers.forEach(item => {
-                        const answerDiv = document.createElement('div');
-                        answerDiv.textContent = `${item.question}: ${item.answer}`;
-                        answersContent.appendChild(answerDiv);
-                    });
-
-                }, 500); // Duration of the fade-out transition
+                    // Wait for the fade-out transition to finish
+                    setTimeout(() => {
+                        // Redirect to /answers with the Gimkit ID as a query parameter
+                        window.location.href = `/answers?id=${gimkitId}`;
+                    }, 500); // Duration of the fade-out transition
+                }
             }
         });
     </script>
