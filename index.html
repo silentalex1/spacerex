@@ -12,17 +12,17 @@
             align-items: center;
             height: 100vh;
             margin: 0;
-            background-color: #000; /* Black background */
-            color: #fff; /* White text */
+            background-color: #000;
+            color: #fff;
             font-family: Arial, sans-serif;
         }
 
         .navbar {
             position: absolute;
-            top: 20px; /* Floating effect */
+            top: 20px;
             left: 50%;
             transform: translateX(-50%);
-            background-color: rgba(128, 0, 128, 0.8); /* Purple with some transparency */
+            background-color: rgba(128, 0, 128, 0.8);
             border-radius: 10px;
             padding: 10px 20px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
@@ -39,11 +39,11 @@
         }
 
         .navbar a:hover {
-            background-color: rgba(128, 0, 128, 0.6); /* Darker purple on hover */
+            background-color: rgba(128, 0, 128, 0.6);
         }
 
         .input-container {
-            margin-top: 100px; /* Space from navbar */
+            margin-top: 100px;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -53,15 +53,23 @@
             padding: 10px;
             border: none;
             border-radius: 5px;
-            width: 250px; /* Width of the input */
+            width: 250px;
             font-size: 16px;
             outline: none;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
-            transition: opacity 0.5s ease; /* Fade effect */
+            transition: opacity 0.5s ease;
         }
 
         input[type="text"]::placeholder {
-            color: #aaa; /* Placeholder text color */
+            color: #aaa;
+        }
+
+        .answers-container {
+            display: none;
+            text-align: center;
+            margin-top: 20px;
+            font-size: 18px;
+            color: #00ff00;
         }
     </style>
 </head>
@@ -76,26 +84,154 @@
         <input type="text" id="gimkitIdInput" placeholder="Enter Gimkit ID" />
     </div>
 
+    <div class="answers-container" id="answersContainer">
+        <p>Loading answers...</p>
+    </div>
+
     <script>
         const inputField = document.getElementById('gimkitIdInput');
+        const answersContainer = document.getElementById('answersContainer');
 
         // Event listener for input field
         inputField.addEventListener('keypress', (event) => {
             if (event.key === 'Enter') {
-                const gimkitId = inputField.value.trim(); // Get the Gimkit ID
+                const gimkitId = inputField.value.trim();
 
                 if (gimkitId) {
-                    // Fade out the input box
                     inputField.style.opacity = 0;
 
-                    // Wait for the fade-out transition to finish
                     setTimeout(() => {
-                        // Redirect to /answers with the Gimkit ID as a query parameter
-                        window.location.href = `/answers?id=${gimkitId}`;
-                    }, 500); // Duration of the fade-out transition
+                        inputField.style.display = 'none';
+                        answersContainer.style.display = 'block';
+
+                        // Simulating Gimkit answers load
+                        loadGimkitAnswers(gimkitId);
+                    }, 500);
                 }
             }
         });
+
+        function loadGimkitAnswers(gimkitId) {
+            // Mock function to simulate Gimkit answers loading
+            const answers = [
+                { question: "What is 2+2?", answer: "4" },
+                { question: "Capital of France?", answer: "Paris" },
+                { question: "Primary color of the sun?", answer: "Yellow" }
+            ];
+
+            const answersContainer = document.getElementById('answersContainer');
+            answersContainer.innerHTML = "<h3>Gimkit Answers</h3>";
+            answers.forEach((item) => {
+                const answerDiv = document.createElement('div');
+                answerDiv.innerHTML = `<strong>Question:</strong> ${item.question} <br><strong>Answer:</strong> ${item.answer}`;
+                answersContainer.appendChild(answerDiv);
+            });
+        }
+    </script>
+
+    <!-- Gimkit answer handler script -->
+    <script>
+        import * as gimkitElements from "./config.json";
+
+        const DATA = new Map();
+        let gimkitHacksRunning = false;
+
+        document.addEventListener("DOMContentLoaded", () => {
+            if (preRunChecks()) initializeListeners();
+        });
+
+        function preRunChecks() {
+            if (!window.location.href.includes("gimkit")) {
+                alert("You must be on a Gimkit game page to use this script.");
+                return false;
+            }
+
+            if (gimkitHacksRunning) {
+                alert("Gimkit hacks are already running.");
+                return false;
+            }
+
+            gimkitHacksRunning = true;
+            console.log("Script is running...");
+            return true;
+        }
+
+        function isOnQuestionPage() {
+            return document.getElementsByClassName(gimkitElements['container-div']).length > 0;
+        }
+
+        function isTextQuestion() {
+            return document.getElementsByClassName(gimkitElements['text-input']).length > 0;
+        }
+
+        function saveQuestionAnswer(question, answer) {
+            if (!DATA.has(question)) {
+                DATA.set(question, answer);
+                console.log("Question saved:", question, answer);
+            }
+        }
+
+        function checkAnswerCorrectness() {
+            const isCorrectAnswer = document.getElementsByClassName(gimkitElements['correct-thing']).length > 0;
+            return isCorrectAnswer;
+        }
+
+        function retrieveAnswer(question) {
+            return DATA.get(question) || null;
+        }
+
+        function handleChoiceQuestions() {
+            const options = document.getElementsByClassName(gimkitElements['options']);
+            const questionText = document.querySelector(`.${gimkitElements['question']}`)?.innerText;
+            const savedAnswer = retrieveAnswer(questionText);
+
+            Array.from(options).forEach(option => {
+                option.addEventListener("click", () => { 
+                    const selectedAnswer = option.innerText;
+
+                    setTimeout(() => {
+                        if (checkAnswerCorrectness()) {
+                            saveQuestionAnswer(questionText, selectedAnswer);
+                        }
+                    }, 250);
+                });
+
+                if (option.innerText === savedAnswer) {
+                    option.style.transform = "scale(1.3)";
+                }
+            });
+        }
+
+        function handleTextQuestions() {
+            const inputField = document.querySelector(`.${gimkitElements['text-input']}`);
+            const submitButton = document.querySelector(`.${gimkitElements['text-submit']}`);
+            const questionText = document.querySelector(`.${gimkitElements['question']}`)?.innerText;
+            const savedAnswer = retrieveAnswer(questionText);
+
+            if (savedAnswer) inputField.placeholder = savedAnswer;
+
+            const saveTextAnswer = () => {
+                setTimeout(() => {
+                    if (checkAnswerCorrectness()) saveQuestionAnswer(questionText, inputField.value);
+                }, 250);
+            };
+
+            submitButton.addEventListener("click", saveTextAnswer);
+            inputField.addEventListener("keyup", (e) => {
+                if (e.key === "Enter") saveTextAnswer();
+            });
+        }
+
+        function initializeListeners() {
+            alert("Start answering questions to save answers. Correct answers will be highlighted when available.");
+
+            const questionInterval = setInterval(() => {
+                if (isOnQuestionPage()) {
+                    clearInterval(questionInterval);
+                    isTextQuestion() ? handleTextQuestions() : handleChoiceQuestions();
+                }
+            }, 100);
+        }
     </script>
 
 </body>
