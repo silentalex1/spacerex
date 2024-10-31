@@ -3,236 +3,380 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gimkit ID Entry</title>
+    <title>Sintel</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
-        body {
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            margin: 0;
-            background-color: #000;
-            color: #fff;
-            font-family: Arial, sans-serif;
+        :root {
+            --primary-color: #e02424;
+            --secondary-color: #4a90e2;
+            --background-color: #0f0f0f;
+            --text-color: #f5f5f5;
+            --container-bg: #181818;
         }
 
-        .navbar {
-            position: absolute;
-            top: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            background-color: rgba(128, 0, 128, 0.8);
-            border-radius: 10px;
-            padding: 10px 20px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--background-color);
+            color: var(--text-color);
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        header {
+            background-color: rgba(24, 24, 24, 0.8);
+            backdrop-filter: blur(10px);
+            position: fixed;
+            width: 100%;
+            z-index: 1000;
+            top: 0;
+            transition: all 0.3s ease;
+        }
+
+        header.scrolled {
+            background-color: rgba(24, 24, 24, 0.95);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 0;
+        }
+
+        .logo {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: var(--primary-color);
+            text-decoration: none;
+        }
+
+        .nav-links {
             display: flex;
             gap: 20px;
         }
 
-        .navbar a {
-            color: #fff;
+        .nav-links a {
+            color: var(--text-color);
             text-decoration: none;
-            padding: 10px 15px;
-            border-radius: 5px;
-            transition: background-color 0.3s;
+            font-weight: 500;
+            transition: color 0.3s ease;
+            position: relative;
         }
 
-        .navbar a:hover {
-            background-color: rgba(128, 0, 128, 0.6);
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -5px;
+            left: 0;
+            background-color: var(--primary-color);
+            transition: width 0.3s ease;
         }
 
-        .input-container {
-            margin-top: 100px;
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        .hero {
+            height: 100vh;
             display: flex;
-            flex-direction: column;
             align-items: center;
-        }
-
-        input[type="text"] {
-            padding: 10px;
-            border: none;
-            border-radius: 5px;
-            width: 250px;
-            font-size: 16px;
-            outline: none;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
-            transition: opacity 0.5s ease;
-        }
-
-        input[type="text"]::placeholder {
-            color: #aaa;
-        }
-
-        .answers-container {
-            display: none;
+            justify-content: center;
             text-align: center;
+            background: linear-gradient(rgba(15, 15, 15, 0.8), rgba(15, 15, 15, 0.8)), url('https://source.unsplash.com/random/1920x1080?tech') no-repeat center center/cover;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(circle, rgba(74, 144, 226, 0.1) 0%, rgba(15, 15, 15, 0.8) 100%);
+        }
+
+        .hero-content {
+            max-width: 800px;
+            position: relative;
+            z-index: 1;
+        }
+
+        h1 {
+            font-size: 4rem;
+            margin-bottom: 20px;
+            animation: fadeInUp 1s ease;
+        }
+
+        .description {
+            font-size: 1.2rem;
+            margin-bottom: 30px;
+            animation: fadeInUp 1s ease 0.2s;
+            opacity: 0;
+            animation-fill-mode: forwards;
+        }
+
+        .cta-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            animation: fadeInUp 1s ease 0.4s;
+            opacity: 0;
+            animation-fill-mode: forwards;
+        }
+
+        .button {
+            padding: 12px 30px;
+            border: none;
+            border-radius: 30px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .button i {
+            margin-right: 8px;
+        }
+
+        .primary-btn {
+            background-color: var(--primary-color);
+            color: var(--text-color);
+        }
+
+        .secondary-btn {
+            background-color: transparent;
+            color: var(--text-color);
+            border: 2px solid var(--text-color);
+        }
+
+        .button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .features-section {
+            padding: 100px 0;
+            background-color: var(--container-bg);
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+        }
+
+        .feature-card {
+            background-color: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            padding: 30px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .feature-icon {
+            font-size: 3rem;
+            color: var(--secondary-color);
+            margin-bottom: 20px;
+        }
+
+        .feature-title {
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+        }
+
+        .feature-description {
+            color: #b0b0b0;
+        }
+
+        .purchase-section {
+            padding: 100px 0;
+            text-align: center;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+        }
+
+        .purchase-title {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+        }
+
+        .purchase-description {
+            font-size: 1.1rem;
+            max-width: 600px;
+            margin: 0 auto 30px;
+        }
+
+        footer {
+            background-color: var(--container-bg);
+            padding: 40px 0;
+            text-align: center;
+        }
+
+        .footer-logo {
+            font-size: 2rem;
+            color: var(--primary-color);
+            margin-bottom: 20px;
+        }
+
+        .footer-links a {
+            color: #bbb;
+            text-decoration: none;
+            margin: 0 10px;
+            transition: color 0.3s ease;
+        }
+
+        .footer-links a:hover {
+            color: var(--text-color);
+        }
+
+        .social-icons {
             margin-top: 20px;
-            font-size: 18px;
-            color: #00ff00;
+        }
+
+        .social-icons a {
+            color: var(--text-color);
+            font-size: 1.5rem;
+            margin: 0 10px;
+            transition: color 0.3s ease;
+        }
+
+        .social-icons a:hover {
+            color: var(--primary-color);
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 3rem;
+            }
+            .description {
+                font-size: 1rem;
+            }
+            .cta-buttons {
+                flex-direction: column;
+            }
         }
     </style>
 </head>
 <body>
+    <header>
+        <nav class="container">
+            <a href="#" class="logo">S</a>
+            <div class="nav-links">
+                <a href="#home">Home</a>
+                <a href="#features">Features</a>
+                <a href="#pricing">Pricing</a>
+                <a href="#faq">FAQ</a>
+            </div>
+        </nav>
+    </header>
 
-    <div class="navbar">
-        <a href="#">Kahoot</a>
-        <a href="#">Quizziz</a>
-    </div>
+    <main>
+        <section id="home" class="hero">
+            <div class="hero-content">
+                <h1>Welcome to Sintel</h1>
+                <p class="description">Empowering innovation since 2024. Experience smooth, cutting-edge solutions crafted by our dedicated team.</p>
+                <div class="cta-buttons">
+                    <a href="#" class="button primary-btn"><i class="fas fa-rocket"></i> Get Started</a>
+                    <a href="#" class="button secondary-btn"><i class="fab fa-discord"></i> Join Discord</a>
+                </div>
+            </div>
+        </section>
 
-    <div class="input-container">
-        <input type="text" id="gimkitIdInput" placeholder="Enter Gimkit ID" />
-    </div>
+        <section id="features" class="features-section">
+            <div class="container">
+                <h2 class="section-title">Our Features</h2>
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <i class="feature-icon fas fa-bolt"></i>
+                        <h3 class="feature-title">Lightning Fast</h3>
+                        <p class="feature-description">Experience unparalleled speed and performance.</p>
+                    </div>
+                    <div class="feature-card">
+                        <i class="feature-icon fas fa-shield-alt"></i>
+                        <h3 class="feature-title">Secure</h3>
+                        <p class="feature-description">Your data is protected with state-of-the-art security.</p>
+                    </div>
+                    <div class="feature-card">
+                        <i class="feature-icon fas fa-cogs"></i>
+                        <h3 class="feature-title">Customizable</h3>
+                        <p class="feature-description">Tailor the experience to your specific needs.</p>
+                    </div>
+                    <div class="feature-card">
+                        <i class="feature-icon fas fa-headset"></i>
+                        <h3 class="feature-title">24/7 Support</h3>
+                        <p class="feature-description">Our team is always here to help you succeed.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
 
-    <div class="answers-container" id="answersContainer">
-        <p>Loading answers...</p>
-    </div>
+        <section id="pricing" class="purchase-section">
+            <div class="container">
+                <h2 class="purchase-title">Ready to Get Started?</h2>
+                <p class="purchase-description">Choose the perfect plan for your needs. Sintel accepts various payment options for your convenience.</p>
+                <a href="#" class="button primary-btn">View Pricing Plans</a>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <div class="footer-logo">S</div>
+            <p>&copy; 2024 Sintel. All Rights Reserved.</p>
+            <div class="footer-links">
+                <a href="#">Privacy Policy</a>
+                <a href="#">Terms of Service</a>
+            </div>
+            <div class="social-icons">
+                <a href="#"><i class="fab fa-twitter"></i></a>
+                <a href="#"><i class="fab fa-facebook"></i></a>
+                <a href="#"><i class="fab fa-instagram"></i></a>
+                <a href="#"><i class="fab fa-github"></i></a>
+            </div>
+        </div>
+    </footer>
 
     <script>
-        const inputField = document.getElementById('gimkitIdInput');
-        const answersContainer = document.getElementById('answersContainer');
-
-        // Event listener for input field
-        inputField.addEventListener('keypress', (event) => {
-            if (event.key === 'Enter') {
-                const gimkitId = inputField.value.trim();
-
-                if (gimkitId) {
-                    inputField.style.opacity = 0;
-
-                    setTimeout(() => {
-                        inputField.style.display = 'none';
-                        answersContainer.style.display = 'block';
-
-                        // Simulating Gimkit answers load
-                        loadGimkitAnswers(gimkitId);
-                    }, 500);
-                }
-            }
+        window.addEventListener('scroll', () => {
+            const header = document.querySelector('header');
+            header.classList.toggle('scrolled', window.scrollY > 0);
         });
-
-        function loadGimkitAnswers(gimkitId) {
-            // Mock function to simulate Gimkit answers loading
-            const answers = [
-                { question: "What is 2+2?", answer: "4" },
-                { question: "Capital of France?", answer: "Paris" },
-                { question: "Primary color of the sun?", answer: "Yellow" }
-            ];
-
-            const answersContainer = document.getElementById('answersContainer');
-            answersContainer.innerHTML = "<h3>Gimkit Answers</h3>";
-            answers.forEach((item) => {
-                const answerDiv = document.createElement('div');
-                answerDiv.innerHTML = `<strong>Question:</strong> ${item.question} <br><strong>Answer:</strong> ${item.answer}`;
-                answersContainer.appendChild(answerDiv);
-            });
-        }
     </script>
-
-    <!-- Gimkit answer handler script -->
-    <script>
-        import * as gimkitElements from "./config.json";
-
-        const DATA = new Map();
-        let gimkitHacksRunning = false;
-
-        document.addEventListener("DOMContentLoaded", () => {
-            if (preRunChecks()) initializeListeners();
-        });
-
-        function preRunChecks() {
-            if (!window.location.href.includes("gimkit")) {
-                alert("You must be on a Gimkit game page to use this script.");
-                return false;
-            }
-
-            if (gimkitHacksRunning) {
-                alert("Gimkit hacks are already running.");
-                return false;
-            }
-
-            gimkitHacksRunning = true;
-            console.log("Script is running...");
-            return true;
-        }
-
-        function isOnQuestionPage() {
-            return document.getElementsByClassName(gimkitElements['container-div']).length > 0;
-        }
-
-        function isTextQuestion() {
-            return document.getElementsByClassName(gimkitElements['text-input']).length > 0;
-        }
-
-        function saveQuestionAnswer(question, answer) {
-            if (!DATA.has(question)) {
-                DATA.set(question, answer);
-                console.log("Question saved:", question, answer);
-            }
-        }
-
-        function checkAnswerCorrectness() {
-            const isCorrectAnswer = document.getElementsByClassName(gimkitElements['correct-thing']).length > 0;
-            return isCorrectAnswer;
-        }
-
-        function retrieveAnswer(question) {
-            return DATA.get(question) || null;
-        }
-
-        function handleChoiceQuestions() {
-            const options = document.getElementsByClassName(gimkitElements['options']);
-            const questionText = document.querySelector(`.${gimkitElements['question']}`)?.innerText;
-            const savedAnswer = retrieveAnswer(questionText);
-
-            Array.from(options).forEach(option => {
-                option.addEventListener("click", () => { 
-                    const selectedAnswer = option.innerText;
-
-                    setTimeout(() => {
-                        if (checkAnswerCorrectness()) {
-                            saveQuestionAnswer(questionText, selectedAnswer);
-                        }
-                    }, 250);
-                });
-
-                if (option.innerText === savedAnswer) {
-                    option.style.transform = "scale(1.3)";
-                }
-            });
-        }
-
-        function handleTextQuestions() {
-            const inputField = document.querySelector(`.${gimkitElements['text-input']}`);
-            const submitButton = document.querySelector(`.${gimkitElements['text-submit']}`);
-            const questionText = document.querySelector(`.${gimkitElements['question']}`)?.innerText;
-            const savedAnswer = retrieveAnswer(questionText);
-
-            if (savedAnswer) inputField.placeholder = savedAnswer;
-
-            const saveTextAnswer = () => {
-                setTimeout(() => {
-                    if (checkAnswerCorrectness()) saveQuestionAnswer(questionText, inputField.value);
-                }, 250);
-            };
-
-            submitButton.addEventListener("click", saveTextAnswer);
-            inputField.addEventListener("keyup", (e) => {
-                if (e.key === "Enter") saveTextAnswer();
-            });
-        }
-
-        function initializeListeners() {
-            alert("Start answering questions to save answers. Correct answers will be highlighted when available.");
-
-            const questionInterval = setInterval(() => {
-                if (isOnQuestionPage()) {
-                    clearInterval(questionInterval);
-                    isTextQuestion() ? handleTextQuestions() : handleChoiceQuestions();
-                }
-            }, 100);
-        }
-    </script>
-
 </body>
 </html>
