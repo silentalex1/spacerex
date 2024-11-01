@@ -6,6 +6,7 @@
     <title>Sintel</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
     <style>
+        /* Core Theme Colors */
         :root {
             --primary-color: #e02424;
             --secondary-color: #4a4a4a;
@@ -13,9 +14,124 @@
             --text-color: #ffffff;
             --accent-color: #1c1c2c;
         }
-        /* Existing CSS styles (unchanged) */
 
-        /* New styles for the modal window */
+        /* Reset & Base Styling */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--background-color);
+            color: var(--text-color);
+            line-height: 1.6;
+        }
+
+        /* Navigation Styling */
+        header {
+            padding: 20px;
+            background-color: var(--accent-color);
+            color: var(--text-color);
+        }
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .logo {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--primary-color);
+        }
+        nav .nav-links {
+            display: flex;
+            gap: 20px;
+        }
+        nav .nav-links a {
+            color: var(--text-color);
+            text-decoration: none;
+            transition: color 0.2s ease;
+        }
+        nav .nav-links a:hover {
+            color: var(--primary-color);
+        }
+
+        /* Hero Section */
+        .hero {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 80vh;
+            text-align: center;
+        }
+        .hero-content h1 {
+            font-size: 3rem;
+            color: var(--primary-color);
+        }
+        .cta-buttons {
+            margin-top: 20px;
+        }
+        .button {
+            padding: 12px 24px;
+            font-size: 16px;
+            border-radius: 4px;
+            text-decoration: none;
+            cursor: pointer;
+            transition: background 0.2s ease;
+        }
+        .primary-btn {
+            background: var(--primary-color);
+            color: var(--text-color);
+            border: none;
+        }
+        .primary-btn:hover {
+            background: #b61d1d;
+        }
+        .secondary-btn {
+            background: var(--secondary-color);
+            color: var(--text-color);
+            border: none;
+        }
+        .secondary-btn:hover {
+            background: #333333;
+        }
+
+        /* Purchase Section */
+        .purchase-section {
+            text-align: center;
+            padding: 60px 0;
+        }
+        .purchase-title {
+            font-size: 2rem;
+            color: var(--primary-color);
+            margin-bottom: 20px;
+        }
+        .purchase-description {
+            color: var(--secondary-color);
+            margin-bottom: 20px;
+        }
+
+        /* Footer */
+        footer {
+            background: var(--accent-color);
+            padding: 20px;
+            text-align: center;
+        }
+        footer p {
+            color: var(--text-color);
+        }
+        footer .footer-links a {
+            color: var(--text-color);
+            text-decoration: none;
+            margin: 0 10px;
+            transition: color 0.2s ease;
+        }
+        footer .footer-links a:hover {
+            color: var(--primary-color);
+        }
+
+        /* Modal Styles */
         .modal {
             display: none;
             position: fixed;
@@ -26,7 +142,7 @@
             background: rgba(0, 0, 0, 0.7);
             justify-content: center;
             align-items: center;
-            z-index: 2000;
+            z-index: 1000;
         }
         .modal-content {
             background: var(--background-color);
@@ -35,7 +151,6 @@
             max-width: 500px;
             border-radius: 8px;
             text-align: center;
-            position: relative;
             color: var(--text-color);
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
         }
@@ -58,9 +173,12 @@
         }
         .modal-list {
             text-align: left;
+            list-style: none;
+            padding: 0;
         }
         .modal-list-item {
             padding: 8px 0;
+            color: var(--secondary-color);
         }
     </style>
 </head>
@@ -96,7 +214,7 @@
         </section>
     </main>
 
-    <!-- Modal template for Features and Pricing -->
+    <!-- Modal for Features and Pricing -->
     <div id="modal" class="modal">
         <div class="modal-content">
             <span class="modal-close" id="modal-close">&times;</span>
@@ -145,9 +263,9 @@
             e.preventDefault();
             const featuresContent = `
                 <ul class="modal-list">
-                    <li class="modal-list-item">- feature text example</li>
-                    <li class="modal-list-item">- feature text example</li>
-                    <li class="modal-list-item">- feature text example</li>
+                    <li class="modal-list-item">Feature 1</li>
+                    <li class="modal-list-item">Feature 2</li>
+                    <li class="modal-list-item">Feature 3</li>
                 </ul>`;
             openModal('Features', featuresContent);
         });
@@ -155,7 +273,7 @@
         // Open Pricing modal
         document.getElementById('pricing-btn').addEventListener('click', function(e) {
             e.preventDefault();
-            const pricingContent = `<p>example price here</p>`;
+            const pricingContent = `<p>Example Text</p>`;
             openModal('Pricing', pricingContent);
         });
 
