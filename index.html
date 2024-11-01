@@ -6,135 +6,58 @@
     <title>Sintel</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
     <style>
+        /* Root and basic styles */
         :root {
             --primary-color: #e02424;
             --secondary-color: #4a4a4a;
             --background-color: #0a0a0f;
             --text-color: #ffffff;
             --accent-color: #1c1c2c;
-            --modal-background: rgba(10, 10, 15, 0.9);
         }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            scroll-behavior: smooth;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; scroll-behavior: smooth; }
 
         body {
             font-family: 'Inter', sans-serif;
             background-color: var(--background-color);
             color: var(--text-color);
-            line-height: 1.6;
             overflow-x: hidden;
         }
 
-        .container {
-            width: 90%;
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 15px;
-        }
+        .container { max-width: 1400px; margin: 0 auto; padding: 0 20px; }
 
-        /* Navigation Styles */
         header {
-            position: fixed;
-            width: 100%;
-            top: 0;
-            left: 0;
-            background-color: rgba(10, 10, 15, 0.8);
-            backdrop-filter: blur(10px);
-            z-index: 1000;
-            box-shadow: 0 2px 10px rgba(224, 36, 36, 0.1);
+            position: fixed; width: 100%; z-index: 1000;
+            background: rgba(10, 10, 15, 0.95);
+            backdrop-filter: blur(20px);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
         }
 
-        nav {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 20px 0;
-        }
+        nav { display: flex; justify-content: space-between; align-items: center; padding: 25px 0; }
 
-        .logo {
-            font-size: 2rem;
-            font-weight: 700;
-            color: var(--primary-color);
-            background: linear-gradient(to right, var(--primary-color), #ff6b6b);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
+        .logo { font-size: 2.5rem; font-weight: 800; color: var(--primary-color); }
 
-        .nav-links {
-            display: flex;
-            gap: 30px;
-        }
+        .nav-links a { color: var(--text-color); text-decoration: none; font-weight: 500; position: relative; }
 
-        .nav-links a {
-            text-decoration: none;
-            color: var(--text-color);
-            font-weight: 500;
-            position: relative;
-            transition: color 0.3s ease;
-        }
+        .hero { height: 100vh; display: flex; align-items: center; justify-content: center; text-align: center; }
 
-        .nav-links a::after {
-            content: '';
-            position: absolute;
-            width: 0;
-            height: 2px;
-            bottom: -5px;
-            left: 0;
-            background-color: var(--primary-color);
-            transition: width 0.3s ease;
-        }
-
-        .nav-links a:hover {
-            color: var(--primary-color);
-        }
-
-        .nav-links a:hover::after {
-            width: 100%;
-        }
-
-        /* Modal Styles */
         .modal {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: var(--modal-background);
             display: none;
-            justify-content: center;
-            align-items: center;
-            z-index: 2000;
-            backdrop-filter: blur(10px);
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.6);
+            align-items: center; justify-content: center;
         }
 
         .modal-content {
-            background: rgba(28, 28, 44, 0.95);
-            border-radius: 15px;
-            width: 90%;
-            max-width: 500px;
-            max-height: 70%;
-            overflow-y: auto;
+            background: var(--background-color);
             padding: 30px;
+            border-radius: 8px;
+            max-width: 500px;
+            width: 90%;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
             position: relative;
-            box-shadow: 0 15px 50px rgba(0, 0, 0, 0.5);
-            border: 1px solid rgba(224, 36, 36, 0.2);
-            animation: modalSlideIn 0.3s ease-out;
-        }
-
-        @keyframes modalSlideIn {
-            from {
-                opacity: 0;
-                transform: scale(0.9);
-            }
-            to {
-                opacity: 1;
-                transform: scale(1);
-            }
+            animation: fadeIn 0.3s ease;
         }
 
         .modal-header {
@@ -145,51 +68,34 @@
         }
 
         .modal-title {
-            font-size: 1.8rem;
-            background: linear-gradient(to right, var(--primary-color), #ff6b6b);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+            color: var(--primary-color);
+            font-size: 1.5rem;
         }
 
         .modal-close {
+            font-size: 1.5rem;
+            color: var(--primary-color);
             background: none;
             border: none;
-            color: var(--text-color);
-            font-size: 1.5rem;
             cursor: pointer;
-            transition: color 0.3s ease, transform 0.2s ease;
-        }
-
-        .modal-close:hover {
-            color: var(--primary-color);
-            transform: rotate(90deg);
         }
 
         .modal-list {
-            list-style-type: none;
+            list-style: none;
+            padding: 0;
+            color: var(--text-color);
         }
 
         .modal-list li {
-            padding: 12px 0;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-            position: relative;
-            padding-left: 20px;
-            transition: background-color 0.3s ease;
+            margin-bottom: 10px;
+            padding: 8px;
+            border-radius: 4px;
+            background: var(--accent-color);
         }
 
-        .modal-list li:hover {
-            background-color: rgba(224, 36, 36, 0.1);
-        }
-
-        .modal-list li::before {
-            content: '•';
-            color: var(--primary-color);
-            position: absolute;
-            left: 0;
-        }
-
-        .modal-list li:last-child {
-            border-bottom: none;
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
         }
     </style>
 </head>
@@ -199,12 +105,25 @@
             <div class="logo">S</div>
             <div class="nav-links">
                 <a href="#home">Home</a>
-                <a href="#" id="features-link">Features</a>
-                <a href="#pricing">Pricing</a>
+                <a href="#" id="features-button">Features</a>
+                <a href="#" id="pricing-button">View Prices</a>
                 <a href="#faq">FAQ</a>
             </div>
         </nav>
     </header>
+
+    <main>
+        <section id="home" class="hero">
+            <div class="hero-content">
+                <h1>Welcome to Sintel</h1>
+                <p class="description">Since 2024, Sintel has been crafted by a single-handed member, with smooth exploit available now.</p>
+                <div class="cta-buttons">
+                    <button class="button primary-btn">Get Started</button>
+                    <a href="#" class="button secondary-btn" id="discord-invite">Join Discord</a>
+                </div>
+            </div>
+        </section>
+    </main>
 
     <!-- Features Modal -->
     <div id="features-modal" class="modal">
@@ -229,12 +148,12 @@
                 <h2 class="modal-title">Pricing</h2>
                 <button class="modal-close" id="pricing-close">&times;</button>
             </div>
-            <p>Example price here</p>
+            <p class="modal-description">Example price here</p>
         </div>
     </div>
 
     <script>
-        // Modal functionality
+        // Open and close modals
         function openModal(modalId) {
             document.getElementById(modalId).style.display = 'flex';
         }
@@ -243,33 +162,29 @@
             document.getElementById(modalId).style.display = 'none';
         }
 
-        // Features Modal
-        document.getElementById('features-link').addEventListener('click', function(e) {
+        // Event Listeners
+        document.getElementById('features-button').addEventListener('click', function (e) {
             e.preventDefault();
             openModal('features-modal');
         });
 
-        document.getElementById('features-close').addEventListener('click', function() {
-            closeModal('features-modal');
-        });
-
-        // Pricing Modal
-        document.querySelector('.purchase-section .primary-btn').addEventListener('click', function(e) {
+        document.getElementById('pricing-button').addEventListener('click', function (e) {
             e.preventDefault();
             openModal('pricing-modal');
         });
 
-        document.getElementById('pricing-close').addEventListener('click', function() {
+        document.getElementById('features-close').addEventListener('click', function () {
+            closeModal('features-modal');
+        });
+
+        document.getElementById('pricing-close').addEventListener('click', function () {
             closeModal('pricing-modal');
         });
 
-        // Close modal when clicking outside of modal content
-        document.querySelectorAll('.modal').forEach(modal => {
-            modal.addEventListener('click', function(e) {
-                if (e.target === modal) {
-                    modal.style.display = 'none';
-                }
-            });
+        // Discord redirect
+        document.getElementById('discord-invite').addEventListener('click', function (e) {
+            e.preventDefault();
+            window.location.href = 'https://discord.gg/t5E4XyC4h9';
         });
     </script>
 </body>
