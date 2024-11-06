@@ -112,8 +112,8 @@
     <div class="text-area">
         <input type="text" id="inputText" oninput="updateText()" placeholder="Type something here...">
         <select id="fontStyle" onchange="updateText()">
-            <option value="0">Stylized Font 1</option>
-            <option value="1">Stylized Font 2 ("ⱧɆⱠⱠㄖ" style)</option>
+            <option value="0">Stylized Font 1 ("ⱧɆⱠⱠØ" style)</option>
+            <option value="1">Stylized Font 2 (Glitch Style)</option>
             <option value="2">Stylized Font 3</option>
             <option value="3">Stylized Font 4</option>
             <option value="4">Stylized Font 5</option>
@@ -133,28 +133,40 @@
     // Function to apply stylized text based on selected font style
     function stylizeText(text, style) {
         const styles = [
-            { base: 0x1D5A0, gap: 26 },   // Serif bold font (style 1)
-            {                          // Custom "ⱧɆⱠⱠㄖ" style (style 2)
+            { // Custom "ⱧɆⱠⱠØ" style for the first font
                 transform: {
-                    'H': 'Ⱨ', 'E': 'Ɇ', 'L': 'Ⱡ', 'O': 'ㄖ',
-                    'h': 'Ⱨ', 'e': 'Ɇ', 'l': 'Ⱡ', 'o': 'ㄖ'
+                    'H': 'Ⱨ', 'E': 'Ɇ', 'L': 'Ⱡ', 'O': 'Ø',
+                    'h': 'Ⱨ', 'e': 'Ɇ', 'l': 'Ⱡ', 'o': 'Ø'
                 }
             },
-            { base: 0x1D400, gap: 26 },   // Bold font (style 3)
-            { base: 0x1D63C, gap: 26 },   // Bold italic font (style 4)
-            { base: 0x1D5D4, gap: 26 }    // Sans-serif italic font (style 5)
+            { // Glitch font style for the second font
+                transform: {
+                    'A': '𝔸', 'B': '𝔹', 'C': 'ℂ', 'D': '𝔻', 'E': '𝔼', 
+                    'F': '𝔽', 'G': '𝔾', 'H': 'ℍ', 'I': '𝕀', 'J': '𝕁',
+                    'K': '𝕂', 'L': '𝕃', 'M': '𝕄', 'N': 'ℕ', 'O': '𝕆',
+                    'P': 'ℙ', 'Q': 'ℚ', 'R': 'ℝ', 'S': '𝕊', 'T': '𝕋',
+                    'U': '𝕌', 'V': '𝕍', 'W': '𝕎', 'X': '𝕏', 'Y': '𝕐', 'Z': 'ℤ',
+                    'a': '𝖆', 'b': '𝖇', 'c': '𝖈', 'd': '𝖉', 'e': '𝖊',
+                    'f': '𝖋', 'g': '𝖌', 'h': '𝖍', 'i': '𝖎', 'j': '𝖏',
+                    'k': '𝖐', 'l': '𝖑', 'm': '𝖒', 'n': '𝖓', 'o': '𝖔',
+                    'p': '𝖕', 'q': '𝖖', 'r': '𝖗', 's': '𝖘', 't': '𝖙',
+                    'u': '𝖚', 'v': '𝖛', 'w': '𝖜', 'x': '𝖝', 'y': '𝖞', 'z': '𝖟'
+                }
+            },
+            { base: 0x1D400, gap: 26 },   // Other fonts
+            { base: 0x1D63C, gap: 26 },   
+            { base: 0x1D5D4, gap: 26 }    
         ];
 
         const selectedStyle = styles[style];
 
-        // Apply transformation based on font style selection
-        if (style === 1) {
-            // Custom "ⱧɆⱠⱠㄖ" style
+        // Apply custom styles for the first two fonts
+        if (style === 0 || style === 1) {
             return Array.from(text).map(char => {
                 return selectedStyle.transform[char] || char;
             }).join('');
         } else {
-            // Default stylized text transformation
+            // Default transformation for other fonts
             return Array.from(text).map(char => {
                 const code = char.charCodeAt(0);
                 if (code >= 65 && code <= 90) { // Uppercase A-Z
