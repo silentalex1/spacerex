@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Font Bypasser</title>
     <style>
+        /* Background and Layout Styles */
         body {
             background-color: #111;
             color: #f00;
@@ -15,6 +16,7 @@
             height: 100vh;
             margin: 0;
         }
+
         .container {
             width: 60%;
             max-width: 800px;
@@ -23,11 +25,15 @@
             border-radius: 10px;
             box-shadow: 0 0 15px rgba(255, 0, 0, 0.5);
             display: flex;
+            flex-direction: row;
             gap: 20px;
         }
+
         .input-section, .output-section {
             flex: 1;
         }
+
+        /* Input and Dropdown Styles */
         input[type="text"], select {
             width: 100%;
             padding: 10px;
@@ -38,10 +44,13 @@
             border-radius: 5px;
             margin-bottom: 15px;
         }
+
+        /* Output Styles */
         .output-section {
             display: flex;
             align-items: center;
             justify-content: center;
+            color: #f00;
             font-size: 24px;
             padding: 10px;
             background-color: #333;
@@ -54,10 +63,13 @@
     </style>
 </head>
 <body>
+
 <div class="container">
+    <!-- Input Section -->
     <div class="input-section">
         <label for="inputText">Type something:</label>
         <input type="text" id="inputText" oninput="updateText()" placeholder="Type here...">
+
         <label for="fontStyle">Select Font Style:</label>
         <select id="fontStyle" onchange="updateText()">
             <option value="0">Stylized Font 1</option>
@@ -67,31 +79,44 @@
             <option value="4">Stylized Font 5</option>
         </select>
     </div>
+
+    <!-- Output Section -->
     <div id="output" class="output-section">
         Your live preview will appear here...
     </div>
 </div>
-<script>
-    const charMap = {
-        'H': ['H', 'Ⱨ', 'Ⱨ', 'Ⱨ', 'Ⱨ'],
-        'E': ['Ɇ', 'Ɇ', '€', '€', '€'],
-        'L': ['Ⱡ', 'Ⱡ', 'Ⱡ', 'Ⱡ', 'Ⱡ'],
-        'O': ['Ø', 'Ø', 'ø', 'Ø', 'ㄖ'],
-        'h': ['Ⱨ', 'Ⱨ', 'Ⱨ', 'Ⱨ', 'Ⱨ'],
-        'e': ['Ɇ', 'Ɇ', '€', '€', '€'],
-        'l': ['Ⱡ', 'Ⱡ', 'Ⱡ', 'Ⱡ', 'Ⱡ'],
-        'o': ['Ø', 'Ø', 'ø', 'Ø', 'ㄖ']
-    };
 
+<script>
     function stylizeText(text, style) {
-        return text.split('').map(char => charMap[char.toUpperCase()] ? charMap[char.toUpperCase()][style] : char).join('');
+        const styles = [
+            { base: 0x1D5A0, gap: 26 },   // Serif bold font
+            { base: 0x1D670, gap: 26 },   // Sans-serif bold font
+            { base: 0x1D400, gap: 26 },   // Bold font
+            { base: 0x1D63C, gap: 26 },   // Bold italic font
+            { base: 0x1D5D4, gap: 26 }    // Sans-serif italic font
+        ];
+
+        const selectedStyle = styles[style];
+
+        return Array.from(text).map(char => {
+            const code = char.charCodeAt(0);
+            // Check if character is alphabetic (A-Z or a-z)
+            if (code >= 65 && code <= 90) { // Uppercase A-Z
+                return String.fromCodePoint(selectedStyle.base + (code - 65));
+            } else if (code >= 97 && code <= 122) { // Lowercase a-z
+                return String.fromCodePoint(selectedStyle.base + (code - 97) + selectedStyle.gap);
+            } else {
+                return char; // Non-alphabet characters remain the same
+            }
+        }).join('');
     }
 
     function updateText() {
         const inputText = document.getElementById('inputText').value;
-        const fontStyle = parseInt(document.getElementById('fontStyle').value, 10);
+        const fontStyle = parseInt(document.getElementById('fontStyle').value);
         document.getElementById('output').textContent = stylizeText(inputText, fontStyle);
     }
 </script>
+
 </body>
 </html>
