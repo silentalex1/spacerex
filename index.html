@@ -5,72 +5,112 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Font Bypasser</title>
     <style>
-        /* Background and Layout Styles */
+        /* Basic Reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* Body and Background */
         body {
-            background-color: #111;
-            color: #f00;
+            background-color: #121212;
+            color: #f44336;
             font-family: Arial, sans-serif;
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 100vh;
-            margin: 0;
+            min-height: 100vh;
+            overflow: hidden;
         }
 
+        /* Main Container */
         .container {
-            width: 60%;
-            max-width: 800px;
-            background-color: #222;
-            padding: 20px;
+            width: 80%;
+            max-width: 900px;
+            background-color: #1e1e1e;
+            padding: 30px;
             border-radius: 10px;
-            box-shadow: 0 0 15px rgba(255, 0, 0, 0.5);
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.7);
             display: flex;
-            flex-direction: row;
+            flex-direction: column;
+            align-items: center;
             gap: 20px;
         }
 
-        .input-section, .output-section {
-            flex: 1;
+        /* Title */
+        .title {
+            font-size: 28px;
+            font-weight: bold;
+            color: #f44336;
+            text-align: center;
         }
 
-        /* Input and Dropdown Styles */
+        /* Input and Output Styles */
+        .text-area {
+            display: flex;
+            flex-direction: row;
+            width: 100%;
+            gap: 20px;
+        }
+
         input[type="text"], select {
             width: 100%;
-            padding: 10px;
+            padding: 12px;
             font-size: 16px;
-            color: #f00;
+            color: #f44336;
             background-color: #333;
-            border: 1px solid #f00;
+            border: none;
             border-radius: 5px;
-            margin-bottom: 15px;
+            outline: none;
+            transition: 0.3s;
         }
 
-        /* Output Styles */
+        input[type="text"]::placeholder {
+            color: #888;
+        }
+
+        /* Output Section */
         .output-section {
+            width: 100%;
+            padding: 15px;
+            background-color: #292929;
+            color: #f44336;
+            font-size: 20px;
+            text-align: center;
+            border-radius: 5px;
+            min-height: 80px;
             display: flex;
             align-items: center;
             justify-content: center;
-            color: #f00;
-            font-size: 24px;
-            padding: 10px;
-            background-color: #333;
-            border: 1px solid #f00;
-            border-radius: 5px;
-            min-height: 100px;
+            word-break: break-word;
+        }
+
+        /* Dropdown Label */
+        .dropdown-label {
+            font-size: 16px;
+            margin-bottom: 10px;
+            color: #ddd;
+        }
+
+        /* Footer */
+        .footer {
+            margin-top: 20px;
+            font-size: 14px;
+            color: #888;
             text-align: center;
-            word-wrap: break-word;
         }
     </style>
 </head>
 <body>
 
 <div class="container">
-    <!-- Input Section -->
-    <div class="input-section">
-        <label for="inputText">Type something:</label>
-        <input type="text" id="inputText" oninput="updateText()" placeholder="Type here...">
+    <!-- Title -->
+    <div class="title">Font Bypasser</div>
 
-        <label for="fontStyle">Select Font Style:</label>
+    <!-- Input and Dropdown Section -->
+    <div class="text-area">
+        <input type="text" id="inputText" oninput="updateText()" placeholder="Type something here...">
         <select id="fontStyle" onchange="updateText()">
             <option value="0">Stylized Font 1</option>
             <option value="1">Stylized Font 2</option>
@@ -84,9 +124,13 @@
     <div id="output" class="output-section">
         Your live preview will appear here...
     </div>
+
+    <!-- Footer -->
+    <div class="footer">Choose a font style and start typing to see your text transform in real time.</div>
 </div>
 
 <script>
+    // Function to apply stylized text based on selected font style
     function stylizeText(text, style) {
         const styles = [
             { base: 0x1D5A0, gap: 26 },   // Serif bold font
@@ -111,6 +155,7 @@
         }).join('');
     }
 
+    // Function to update the text in real-time
     function updateText() {
         const inputText = document.getElementById('inputText').value;
         const fontStyle = parseInt(document.getElementById('fontStyle').value);
