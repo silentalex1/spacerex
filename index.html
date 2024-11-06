@@ -133,10 +133,16 @@
     // Function to apply stylized text based on selected font style
     function stylizeText(text, style) {
         const styles = [
-            { // Custom "ⱧɆⱠⱠØ" style for the first font
+            { // First font style ("ⱧɆⱠⱠØ" style) for any text
                 transform: {
-                    'H': 'Ⱨ', 'E': 'Ɇ', 'L': 'Ⱡ', 'O': 'Ø',
-                    'h': 'Ⱨ', 'e': 'Ɇ', 'l': 'Ⱡ', 'o': 'Ø'
+                    'A': 'Ɑ', 'B': 'Ƀ', 'C': '₵', 'D': 'Đ', 'E': 'Ɇ', 'F': '₣', 'G': '₲',
+                    'H': 'Ⱨ', 'I': 'ł', 'J': 'J', 'K': '₭', 'L': 'Ⱡ', 'M': '₥', 'N': '₦',
+                    'O': 'Ø', 'P': '₱', 'Q': 'Q', 'R': 'Ɽ', 'S': '₴', 'T': '₮', 'U': 'Ʉ',
+                    'V': 'V', 'W': '₩', 'X': 'Ӿ', 'Y': 'Ɏ', 'Z': 'Ⱬ',
+                    'a': 'ⱥ', 'b': 'ɓ', 'c': '¢', 'd': 'đ', 'e': 'ɇ', 'f': 'ƒ', 'g': 'ɠ',
+                    'h': 'ⱨ', 'i': 'į', 'j': 'ʝ', 'k': '₭', 'l': 'ⱡ', 'm': '₥', 'n': '₦',
+                    'o': 'ø', 'p': '₱', 'q': 'q', 'r': 'Ɽ', 's': 'ʂ', 't': '₮', 'u': 'ʉ',
+                    'v': 'v', 'w': 'ⱳ', 'x': 'ӿ', 'y': 'ɏ', 'z': 'ƶ'
                 }
             },
             { // Glitch font style for the second font
@@ -180,11 +186,12 @@
         }
     }
 
-    // Function to update the text in real-time
+    // Function to update the output text based on user input and font selection
     function updateText() {
-        const inputText = document.getElementById('inputText').value;
-        const fontStyle = parseInt(document.getElementById('fontStyle').value);
-        document.getElementById('output').textContent = stylizeText(inputText, fontStyle);
+        const inputText = document.getElementById("inputText").value;
+        const fontStyle = document.getElementById("fontStyle").value;
+        const output = stylizeText(inputText, parseInt(fontStyle));
+        document.getElementById("output").textContent = output;
     }
 </script>
 
