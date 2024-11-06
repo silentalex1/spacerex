@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Font Bypasser</title>
     <style>
-        /* Background and Layout Styles */
         body {
             background-color: #111;
             color: #f00;
@@ -16,7 +15,6 @@
             height: 100vh;
             margin: 0;
         }
-
         .container {
             width: 60%;
             max-width: 800px;
@@ -25,15 +23,11 @@
             border-radius: 10px;
             box-shadow: 0 0 15px rgba(255, 0, 0, 0.5);
             display: flex;
-            flex-direction: row;
             gap: 20px;
         }
-
         .input-section, .output-section {
             flex: 1;
         }
-
-        /* Input and Dropdown Styles */
         input[type="text"], select {
             width: 100%;
             padding: 10px;
@@ -44,13 +38,10 @@
             border-radius: 5px;
             margin-bottom: 15px;
         }
-
-        /* Output Styles */
         .output-section {
             display: flex;
             align-items: center;
             justify-content: center;
-            color: #f00;
             font-size: 24px;
             padding: 10px;
             background-color: #333;
@@ -63,13 +54,10 @@
     </style>
 </head>
 <body>
-
 <div class="container">
-    <!-- Input Section -->
     <div class="input-section">
         <label for="inputText">Type something:</label>
         <input type="text" id="inputText" oninput="updateText()" placeholder="Type here...">
-
         <label for="fontStyle">Select Font Style:</label>
         <select id="fontStyle" onchange="updateText()">
             <option value="0">Stylized Font 1</option>
@@ -79,35 +67,31 @@
             <option value="4">Stylized Font 5</option>
         </select>
     </div>
-
-    <!-- Output Section -->
     <div id="output" class="output-section">
         Your live preview will appear here...
     </div>
 </div>
-
 <script>
-    function stylizeText(text, style) {
-        const charMap = {
-            'H': ['H', 'Ⱨ', 'Ⱨ', 'Ⱨ', 'Ⱨ'],
-            'E': ['Ɇ', 'Ɇ', '€', '€', '€'],
-            'L': ['Ⱡ', 'Ⱡ', 'Ⱡ', 'Ⱡ', 'Ⱡ'],
-            'O': ['Ø', 'Ø', 'ø', 'Ø', 'ㄖ'],
-            'h': ['Ⱨ', 'Ⱨ', 'Ⱨ', 'Ⱨ', 'Ⱨ'],
-            'e': ['Ɇ', 'Ɇ', '€', '€', '€'],
-            'l': ['Ⱡ', 'Ⱡ', 'Ⱡ', 'Ⱡ', 'Ⱡ'],
-            'o': ['Ø', 'Ø', 'ø', 'Ø', 'ㄖ']
-        };
+    const charMap = {
+        'H': ['H', 'Ⱨ', 'Ⱨ', 'Ⱨ', 'Ⱨ'],
+        'E': ['Ɇ', 'Ɇ', '€', '€', '€'],
+        'L': ['Ⱡ', 'Ⱡ', 'Ⱡ', 'Ⱡ', 'Ⱡ'],
+        'O': ['Ø', 'Ø', 'ø', 'Ø', 'ㄖ'],
+        'h': ['Ⱨ', 'Ⱨ', 'Ⱨ', 'Ⱨ', 'Ⱨ'],
+        'e': ['Ɇ', 'Ɇ', '€', '€', '€'],
+        'l': ['Ⱡ', 'Ⱡ', 'Ⱡ', 'Ⱡ', 'Ⱡ'],
+        'o': ['Ø', 'Ø', 'ø', 'Ø', 'ㄖ']
+    };
 
+    function stylizeText(text, style) {
         return text.split('').map(char => charMap[char.toUpperCase()] ? charMap[char.toUpperCase()][style] : char).join('');
     }
 
     function updateText() {
         const inputText = document.getElementById('inputText').value;
-        const fontStyle = parseInt(document.getElementById('fontStyle').value);
+        const fontStyle = parseInt(document.getElementById('fontStyle').value, 10);
         document.getElementById('output').textContent = stylizeText(inputText, fontStyle);
     }
 </script>
-
 </body>
 </html>
