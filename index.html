@@ -113,7 +113,7 @@
         <input type="text" id="inputText" oninput="updateText()" placeholder="Type something here...">
         <select id="fontStyle" onchange="updateText()">
             <option value="0">Stylized Font 1</option>
-            <option value="1">Stylized Font 2</option>
+            <option value="1">Stylized Font 2 ("ⱧɆⱠⱠㄖ" style)</option>
             <option value="2">Stylized Font 3</option>
             <option value="3">Stylized Font 4</option>
             <option value="4">Stylized Font 5</option>
@@ -133,26 +133,39 @@
     // Function to apply stylized text based on selected font style
     function stylizeText(text, style) {
         const styles = [
-            { base: 0x1D5A0, gap: 26 },   // Serif bold font
-            { base: 0x1D670, gap: 26 },   // Sans-serif bold font
-            { base: 0x1D400, gap: 26 },   // Bold font
-            { base: 0x1D63C, gap: 26 },   // Bold italic font
-            { base: 0x1D5D4, gap: 26 }    // Sans-serif italic font
+            { base: 0x1D5A0, gap: 26 },   // Serif bold font (style 1)
+            {                          // Custom "ⱧɆⱠⱠㄖ" style (style 2)
+                transform: {
+                    'H': 'Ⱨ', 'E': 'Ɇ', 'L': 'Ⱡ', 'O': 'ㄖ',
+                    'h': 'Ⱨ', 'e': 'Ɇ', 'l': 'Ⱡ', 'o': 'ㄖ'
+                }
+            },
+            { base: 0x1D400, gap: 26 },   // Bold font (style 3)
+            { base: 0x1D63C, gap: 26 },   // Bold italic font (style 4)
+            { base: 0x1D5D4, gap: 26 }    // Sans-serif italic font (style 5)
         ];
 
         const selectedStyle = styles[style];
 
-        return Array.from(text).map(char => {
-            const code = char.charCodeAt(0);
-            // Check if character is alphabetic (A-Z or a-z)
-            if (code >= 65 && code <= 90) { // Uppercase A-Z
-                return String.fromCodePoint(selectedStyle.base + (code - 65));
-            } else if (code >= 97 && code <= 122) { // Lowercase a-z
-                return String.fromCodePoint(selectedStyle.base + (code - 97) + selectedStyle.gap);
-            } else {
-                return char; // Non-alphabet characters remain the same
-            }
-        }).join('');
+        // Apply transformation based on font style selection
+        if (style === 1) {
+            // Custom "ⱧɆⱠⱠㄖ" style
+            return Array.from(text).map(char => {
+                return selectedStyle.transform[char] || char;
+            }).join('');
+        } else {
+            // Default stylized text transformation
+            return Array.from(text).map(char => {
+                const code = char.charCodeAt(0);
+                if (code >= 65 && code <= 90) { // Uppercase A-Z
+                    return String.fromCodePoint(selectedStyle.base + (code - 65));
+                } else if (code >= 97 && code <= 122) { // Lowercase a-z
+                    return String.fromCodePoint(selectedStyle.base + (code - 97) + selectedStyle.gap);
+                } else {
+                    return char; // Non-alphabet characters remain the same
+                }
+            }).join('');
+        }
     }
 
     // Function to update the text in real-time
